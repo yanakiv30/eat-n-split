@@ -25,7 +25,9 @@ export default function App() {
       <div className="sidebar">
         <FriendList />
         <FormAddFriend />
+        <Button>Add Friend</Button>
       </div>
+      <FormSplitBill />
     </div>
   );
 }
@@ -83,5 +85,28 @@ function Friend({ friend }) {
 
    </form>
    );
-
  }
+ 
+ function FormSplitBill() {
+  return (
+  <form className="form-split-bill">
+     <h2>split a bill with x</h2>
+
+     <label>💰Bill Value</label>
+    <input type = 'text'></input>
+    <label>👲Your Expense</label>
+    <input type = 'text'></input>
+    <label>🧑‍🤝‍🧑X's expense</label>
+    <input type = 'text'></input>
+
+    <label>Who is playing the bill</label> 
+    <select>
+      <option value="user">You</option>
+      <option value="friend">X</option>
+    </select>
+
+    <Button>Split bill</Button>
+
+     
+  </form>
+ )}
