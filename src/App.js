@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -19,13 +21,27 @@ const initialFriends = [
   },
 ];
 
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
 export default function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+  function handleShowAddFriend() {
+    return setShowAddFriend((show) => !show);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendList />
-        <FormAddFriend />
-        <Button>Add Friend</Button>
+        {showAddFriend && <FormAddFriend />}
+        <Button onClick={handleShowAddFriend}>
+          {showAddFriend ? "Close" : "Add Friend"}</Button>
       </div>
       <FormSplitBill />
     </div>
@@ -53,60 +69,49 @@ function Friend({ friend }) {
           You owe {friend.name} {Math.abs(friend.balance)}$
         </p>
       )}
-       {friend.balance > 0 && (
+      {friend.balance > 0 && (
         <p className="green">
           {friend.name} owes you {Math.abs(friend.balance)}$
         </p>
       )}
-       {friend.balance === 0 && (
-        <p>
-          You and {friend.name} are even
-        </p>
-      )}
+      {friend.balance === 0 && <p>You and {friend.name} are even</p>}
       <Button>Select</Button>
-      
     </li>
   );
 }
- function Button({children}) {
-  return <button className="button">{children}</button>
- }
 
- function FormAddFriend() {
-   return (
-   <form className="form-add-friend">
-    <label>🧑‍🤝‍🧑Friend name</label>
-    <input type ='text'></input>
-
-    <label>🖼️Image Url</label>
-    <input type = 'text'></input>
-     <Button>Add</Button>
-
-
-   </form>
-   );
- }
- 
- function FormSplitBill() {
+function FormAddFriend() {
   return (
-  <form className="form-split-bill">
-     <h2>split a bill with x</h2>
+    <form className="form-add-friend">
+      <label>🧑‍🤝‍🧑Friend name</label>
+      <input type="text"></input>
 
-     <label>💰Bill Value</label>
-    <input type = 'text'></input>
-    <label>👲Your Expense</label>
-    <input type = 'text'></input>
-    <label>🧑‍🤝‍🧑X's expense</label>
-    <input type = 'text'></input>
+      <label>🖼️Image Url</label>
+      <input type="text"></input>
+      <Button>Add</Button>
+    </form>
+  );
+}
 
-    <label>Who is playing the bill</label> 
-    <select>
-      <option value="user">You</option>
-      <option value="friend">X</option>
-    </select>
+function FormSplitBill() {
+  return (
+    <form className="form-split-bill">
+      <h2>split a bill with x</h2>
 
-    <Button>Split bill</Button>
+      <label>💰Bill Value</label>
+      <input type="text"></input>
+      <label>👲Your Expense</label>
+      <input type="text"></input>
+      <label>🧑‍🤝‍🧑X's expense</label>
+      <input type="text"></input>
 
-     
-  </form>
- )}
+      <label>Who is playing the bill</label>
+      <select>
+        <option value="user">You</option>
+        <option value="friend">X</option>
+      </select>
+
+      <Button>Split bill</Button>
+    </form>
+  );
+}
