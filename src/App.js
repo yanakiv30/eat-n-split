@@ -31,15 +31,21 @@ function Button({ children, onClick }) {
 
 export default function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
+  const [friends, setFriends] = useState(initialFriends);
   function handleShowAddFriend() {
     return setShowAddFriend((show) => !show);
+  }
+
+  function handleAddFriend(friend) {
+    setFriends(friends=> [...friends, friend]);
   }
 
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList />
-        {showAddFriend && <FormAddFriend />}
+        <FriendList friends={friends}/>
+        {showAddFriend && <FormAddFriend onAddFriend=
+        {handleAddFriend}/>}
         <Button onClick={handleShowAddFriend}>
           {showAddFriend ? "Close" : "Add Friend"}
         </Button>
@@ -49,8 +55,8 @@ export default function App() {
   );
 }
 
-function FriendList() {
-  const friends = initialFriends;
+function FriendList({friends}) {
+  // const friends = initialFriends;
   return (
     <ul>
       {friends.map((friend) => (
@@ -81,18 +87,24 @@ function Friend({ friend }) {
   );
 }
 
-function FormAddFriend() {
+function FormAddFriend({onAddFriend}) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48");
   function handleSubmit(e) {
     e.preventDefault();
+    if (!name || !image) return;
+   
+    const id = crypto.randomUUID();
     const newFriend = {
+      id,
       name,
-      image,
+      image: `${image}?=${id}`,
       balance: 0,
-      id: crypto.randomUUID(),
     };
-    console.log(newFriend)
+
+    onAddFriend(newFriend);
+    setName("");
+    setImage("https://i.pravatar.cc/48");
   }
   return (
     <form className="form-add-friend" onSubmit={handleSubmit}>
@@ -126,7 +138,7 @@ function FormSplitBill() {
       <label>🧑‍🤝‍🧑X's expense</label>
       <input type="text"></input>
 
-      <label>Who is playing the bill</label>
+      <label>👉Who is playing the bill</label>
       <select>
         <option value="user">You</option>
         <option value="friend">X</option>
