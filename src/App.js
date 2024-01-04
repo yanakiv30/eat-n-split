@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -19,13 +21,28 @@ const initialFriends = [
   },
 ];
 
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
 export default function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function handleShowAddFriend() {
+    return setShowAddFriend((showAddFriend) => !showAddFriend)
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendList />
-        <FormAddFriend />
-        <Button>Add Friend</Button>
+        {showAddFriend && <FormAddFriend />}
+        <Button onClick={handleShowAddFriend}>
+          {!showAddFriend ? "Add Friend" : "Close"}</Button>
       </div>
       <FormSplitBill />
     </div>
@@ -79,22 +96,25 @@ function FormAddFriend() {
   );
 }
 
-function Button({ children }) {
-  return <button className="button">{children}</button>;
-}
 function FormSplitBill() {
   return (
     <form className="form-split-bill">
       <h2>Split a Bill with X </h2>
 
       <label>💰Bill value</label>
-      <input type = "text"/>
+      <input type="text" />
 
-      <label>🕴️Your Expense</label> 
-      <input type = "text"/>
+      <label>🕴️Your Expense</label>
+      <input type="text" />
 
       <label>🧑‍🤝‍🧑X's Expense</label>
-      <input type = "text"/>
+      <input type="text" disabled />
+
+      <label>Who is paying the bill</label>
+      <select>
+        <option value="user">You</option>
+        <option value="friend">X</option>
+      </select>
 
       <Button>Split Bill</Button>
     </form>
