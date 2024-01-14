@@ -76,7 +76,10 @@ export default function App() {
 
       {selectedFriend && <FormSplitBill   
       onSplitBill={handleSplitBill}    
-      selectedFriend={selectedFriend}/> }
+      selectedFriend={selectedFriend}
+      key={selectedFriend.id}
+      />      
+      }
     </div>
   );
 }
@@ -189,7 +192,7 @@ const paidByFriend = bill ? bill-paidByUser : "";
       <label>🧑‍🤝‍🧑{selectedFriend.name}'s Expense</label>
       <input type="text" disabled value={paidByFriend}/>
 
-      <label>Who is paying the bill</label>
+      <label>👉Who is paying the bill</label>
       <select value={whoIsPaying}
       onChange={e=>setWhoIsPaying(e.target.value)}>
         <option value="user">You</option>
